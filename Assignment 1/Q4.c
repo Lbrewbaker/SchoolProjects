@@ -46,21 +46,24 @@ int main(){
     //assign ID's
     for (int i = 0; i < 10; i ++){
         students[i].id = ((rand()%10 + 1));
-    }
-
-   for (int i = 0; i < 10; i ++){
-    for (int j = 10; j > 0; j --){
+        //check for duplicates and replace
+        for (int j = 0; j < i; j ++){
         if (students[i].id == students[j].id){
-            students[i].id = (rand()%10 + 1);
+            i--;
         }
      }
    }
 
 	//generate and assign scores
-	for (int i = 0; i < 10; i++){
-        students[i].score = ((rand()%100) +1);
-	}
-
+    for (int i = 0; i < 10; i ++){
+        students[i].score = ((rand()%100 + 1));
+        //check for duplicates and replace
+        for (int j = 0; j < i; j ++){
+        if (students[i].score == students[j].score){
+            i--;
+        }
+     }
+   }
     /*Print the contents of the array of n students.*/
 
 	for (int i = 0; i < 10; i++)	{

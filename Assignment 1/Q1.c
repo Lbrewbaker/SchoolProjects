@@ -29,13 +29,25 @@ void generate(struct student* students){
 
      //assign ID's 1-10.  since I loop through them 1 at a time I know they are unique.
     for (int i = 0; i < 10; i ++){
-        students[i].id = i + 1;
+        students[i].id = ((rand()%10 + 1));
+        //check for duplicates and replace
+        for (int j = 0; j < i; j ++){
+        if (students[i].id == students[j].id){
+            i--;
+        }
      }
+   }
 
      //assign scores
-     for (int i = 0; i < 10; i++){
-        students[i].score = ((rand()%100) + 1);
+    for (int i = 0; i < 10; i ++){
+        students[i].score = ((rand()%100 + 1));
+        //check for duplicates and replace
+        for (int j = 0; j < i; j ++){
+        if (students[i].score == students[j].score){
+            i--;
+        }
      }
+   }
 }
 
 void output(struct student* students){
