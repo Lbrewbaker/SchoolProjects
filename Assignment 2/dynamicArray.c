@@ -1,4 +1,3 @@
-
 /*	dynamicArray.c: Dynamic Array implementation. */
 #include <assert.h>
 #include <stdlib.h>
@@ -17,13 +16,13 @@ struct DynArr
 ************************************************************************ */
 
 /* Initialize (including allocation of data array) dynamic array.
-
 	param: 	v		pointer to the dynamic array
 	param:	cap 	capacity of the dynamic array
 	pre:	v is not null
 	post:	internal data array can hold cap elements
 	post:	v->data is not null
 */
+
 void initDynArr(DynArr *v, int capacity)
 {
 	assert(capacity > 0);
@@ -35,7 +34,6 @@ void initDynArr(DynArr *v, int capacity)
 }
 
 /* Allocate and initialize dynamic array.
-
 	param:	cap 	desired capacity for the dyn array
 	pre:	none
 	post:	none
@@ -52,7 +50,6 @@ DynArr* newDynArr(int cap)
 }
 
 /* Deallocate data array in dynamic array.
-
 	param: 	v		pointer to the dynamic array
 	pre:	none
 	post:	d.data points to null
@@ -71,7 +68,6 @@ void freeDynArr(DynArr *v)
 }
 
 /* Deallocate data array and the dynamic array ure.
-
 	param: 	v		pointer to the dynamic array
 	pre:	none
 	post:	the memory used by v->data is freed
@@ -84,7 +80,6 @@ void deleteDynArr(DynArr *v)
 }
 
 /* Resizes the underlying array to be the size cap
-
 	param: 	v		pointer to the dynamic array
 	param:	cap		the new desired capacity
 	pre:	v is not null
@@ -105,7 +100,6 @@ void _dynArrSetCapacity(DynArr *v, int newCap)
 }
 
 /* Get the size of the dynamic array
-
 	param: 	v		pointer to the dynamic array
 	pre:	v is not null
 	post:	none
@@ -117,7 +111,6 @@ int sizeDynArr(DynArr *v)
 }
 
 /* 	Adds an element to the end of the dynamic array
-
 	param: 	v		pointer to the dynamic array
 	param:	val		the value to add to the end of the dynamic array
 	pre:	the dynArry is not null
@@ -137,7 +130,6 @@ void addDynArr(DynArr *v, TYPE val)
 }
 
 /*	Get an element from the dynamic array from a specified position
-
 	param: 	v		pointer to the dynamic array
 	param:	pos		integer index to get the element from
 	pre:	v is not null
@@ -149,13 +141,11 @@ void addDynArr(DynArr *v, TYPE val)
 
 TYPE getDynArr(DynArr *v, int pos)
 {
-	assert(pos < v->size && pos >= 0);
 	return v->data[pos];
 }
 
 /*	Put an item into the dynamic array at the specified location,
 	overwriting the element that was there
-
 	param: 	v		pointer to the dynamic array
 	param:	pos		the index to put the value into
 	param:	val		the value to insert
@@ -166,12 +156,10 @@ TYPE getDynArr(DynArr *v, int pos)
 */
 void putDynArr(DynArr *v, int pos, TYPE val)
 {
-    assert(pos < v->size && pos >= 0);
     v->data[pos] = val;
 }
 
 /*	Swap two specified elements in the dynamic array
-
 	param: 	v		pointer to the dynamic array
 	param:	i,j		the elements to be swapped
 	pre:	v is not null
@@ -190,7 +178,6 @@ void swapDynArr(DynArr *v, int i, int  j)
 
 /*	Remove the element at the specified location from the array,
 	shifts other elements back one to fill the gap
-
 	param: 	v		pointer to the dynamic array
 	param:	idx		location of element to remove
 	pre:	v is not null
@@ -202,9 +189,11 @@ void swapDynArr(DynArr *v, int i, int  j)
 void removeAtDynArr(DynArr *v, int idx)
 {
 	assert(idx < v->size && idx >= 0);
-	for(int i = idx; i < v->size -1; i++){
+	for(int i = idx; i < v->size; i++){
         v->data[i] = v->data[i+1];
 	}
+
+    v->data[v->size+1] = 0;
     v->size--;
 }
 
@@ -216,7 +205,6 @@ void removeAtDynArr(DynArr *v, int idx)
 
 /*	Returns boolean (encoded in an int) demonstrating whether or not the
 	dynamic array stack has an item on it.
-
 	param:	v		pointer to the dynamic array
 	pre:	the dynArr is not null
 	post:	none
@@ -233,7 +221,6 @@ int isEmptyDynArr(DynArr *v)
 }
 
 /* 	Push an element onto the top of the stack
-
 	param:	v		pointer to the dynamic array
 	param:	val		the value to push onto the stack
 	pre:	v is not null
@@ -247,7 +234,6 @@ void pushDynArr(DynArr *v, TYPE val)
 }
 
 /*	Returns the element at the top of the stack
-
 	param:	v		pointer to the dynamic array
 	pre:	v is not null
 	pre:	v is not empty
@@ -261,7 +247,6 @@ TYPE topDynArr(DynArr *v)
 }
 
 /* Removes the element on top of the stack
-
 	param:	v		pointer to the dynamic array
 	pre:	v is not null
 	pre:	v is not empty
@@ -281,7 +266,6 @@ void popDynArr(DynArr *v)
 	the specified value is in the collection
 	true = 1
 	false = 0
-
 	param:	v		pointer to the dynamic array
 	param:	val		the value to look for in the bag
 	pre:	v is not null
@@ -304,7 +288,6 @@ int containsDynArr(DynArr *v, TYPE val)
 
 /*	Removes the first occurrence of the specified value from the collection
 	if it occurs
-
 	param:	v		pointer to the dynamic array
 	param:	val		the value to remove from the array
 	pre:	v is not null
@@ -317,4 +300,3 @@ void removeDynArr(DynArr *v, TYPE val)
     int remove = containsDynArr(v, val);
 	removeAtDynArr(v, remove);
 }
-

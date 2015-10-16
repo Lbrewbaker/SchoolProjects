@@ -1,10 +1,8 @@
-
 /*	stack.c: Stack application. */
 #include <stdio.h>
 #include <stdlib.h>
 #include "dynArray.h"
 #include "dynamicArray.c"
-
 
 /* ***************************************************************
 Using stack to check for unbalanced parentheses.
@@ -33,7 +31,7 @@ char nextChar(char* s)
 */
 int isBalanced(char* s)
 {
-    struct DynArr *array = newDynArr(10);
+ struct DynArr *array = newDynArr(10);
     char c;
     while((c = nextChar(s)) != '0'){
         switch(c){
@@ -66,11 +64,7 @@ int isBalanced(char* s)
 
         }
     }
-    if(array->size != 0){
-        return 0;
-    }
-    deleteDynArr(array);
-        return 1;
+
 }
 
 int main(int argc, char* argv[]){
