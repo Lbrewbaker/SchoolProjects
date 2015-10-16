@@ -9,7 +9,7 @@ INCLUDE Irvine32.inc
 
 
 TOPLIMIT = 46
-MAXLINE = 5
+
 
 
 .data
@@ -98,32 +98,33 @@ main PROC
 		mov edx, OFFSET toosmall
 		call WriteString
 		call CrLf
-		jmp getnumber
+		jmp getnumber			;redo the get number loop
 		
 
 	;calculate and display the fib sequence
 	goodnum:
-	mov	ecx, playernum
-    mov	eax, 0   					
-    mov	ebx, 1    	 				
-	mov	fib1, eax				
-	mov	fib2, ebx
+		call CrLf				;insterted a break line here for better visualization in the console
+		mov	ecx, playernum
+		mov	eax, 0   					
+		mov	ebx, 1    	 				
+		mov	fib1, eax				
+		mov	fib2, ebx
 
 
 	calcfib:
-	cmp ecx, 0
-	je donefib
-	mov	eax, fib1				
-	mov	ebx, fib2				
-    mov	edx, eax						
-    add	edx, fib2				
-    mov	eax, ebx						
-    mov	ebx, edx						
-	mov	fib1, eax				
-	mov	fib2, ebx
-	cmp	ecx, 0						;check if there are remainign terms to be calculated
-	jg display
-	jle donefib		
+		cmp ecx, 0
+		je donefib
+		mov	eax, fib1				
+		mov	ebx, fib2				
+		mov	edx, eax						
+		add	edx, fib2				
+		mov	eax, ebx						
+		mov	ebx, edx						
+		mov	fib1, eax				
+		mov	fib2, ebx
+		cmp	ecx, 0						;check if there are remainign terms to be calculated
+		jg display
+		jle donefib		
 			
 	;display the lines
 	display:
@@ -132,18 +133,18 @@ main PROC
 		mov edx, OFFSET space
 		call WriteString
 		mov ebx, linecount
-		cmp ebx, MAXLINE		;compares to display limit of 5
+		cmp ebx, 5				;compares to display limit of 5
 		je newline				;jumps to nextline to print CrLF (newline)
 		inc ebx					;increase line counter
 		mov linecount, ebx
-		loop calcfib
-		jmp calcfib
+		loop calcfib			;if this is not here, the counter doesn't get decremented and program continues
+		jmp calcfib				;jump back to start and calculate a new fibonacci number
 	
 	newline:
 		call CrLf
-		mov linecount, 1		;set line counter back to 1
-		loop calcfib			;start new fib sequence for second line
-
+		mov linecount, 1		;set line item counter back to 1
+		loop calcfib			
+		jmp calcfib
 
 	;Good-bye 
 	donefib:
