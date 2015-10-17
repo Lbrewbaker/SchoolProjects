@@ -29,6 +29,17 @@ char nextChar(char* s)
 	pre: s is not null
 	post:
 */
+
+/*
+
+I was very stuck on this portion of the assignment.  I tried using If statements and loops but I kept hitting segmentation faults.  I turned to stack overflow and found this article, written in Java but it helped me finally figure this out:
+http://stackoverflow.com/questions/26516789/using-stack-to-check-balance-for-multiple-lines-of-code
+
+Giving credit where credit is due.
+
+*/
+
+
 int isBalanced(char* s)
 {
  struct DynArr *array = newDynArr(10);
