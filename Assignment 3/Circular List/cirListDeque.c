@@ -264,7 +264,6 @@ int isEmptyCirListDeque(struct cirListDeque *q) {
   	}
 
     else{
-
     return 0;
 
     }

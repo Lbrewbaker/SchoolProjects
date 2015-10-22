@@ -11,10 +11,19 @@ int main(){
 	addFrontCirListDeque(q, (TYPE)5);
 	addFrontCirListDeque(q, (TYPE)6);
 	printCirListDeque(q);
-	printf("%g\n", frontCirListDeque(q));
-	printf("%g\n", backCirListDeque(q));
+	printf("\nRemoving front of Deque: %g", frontCirListDeque(q));
+	printf("\nRemoving back of Deque: %g", backCirListDeque(q));
 	removeFrontCirListDeque(q);
 	removeBackCirListDeque(q);
+
+	printf("\nRemoved back and front at this point\n");
+	printf("New front:%g", frontCirListDeque(q));
+	printf("\n");
+    printf("New back:%g", backCirListDeque(q));
+    printf("\n");
+    printf("\n");
+
+
 	printCirListDeque(q);
 	reverseCirListDeque(q);
 	printCirListDeque(q);
