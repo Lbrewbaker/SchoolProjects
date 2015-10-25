@@ -91,29 +91,32 @@ function makeComparator(auto1, auto2){
 /*This compares two automobiles based on their type. The ordering from "greatest" to "least" is as follows: roadster, pickup, suv, wagon, (types not otherwise listed). It should be case insensitive. If two cars are of equal type then the newest one by model year should be considered "greater".*/
 function typeComparator(auto1, auto2){
 
+	
 	var car1 = auto1.type.toLowerCase();
-    var car2 = auto2.type.toLowerCase();
+	var car2 = auto2.type.toLowerCase();
 	
-
-    if(car1 == 'Roadster' && car2 != 'roadster')
-        return false;
-
-    else if(car1 == 'Pickup' && car2 != 'roadster' && car2 != 'suv' && car2 != 'wagon' && car2 != 'sedan')
-        return false;
-
-	else if(car1 == 'Sedan' && car2 != 'roadster' && car2 != 'pickup' && car2 != 'suv' && car2 != 'wagon')
-        return false;
+	if (car1 == "roadster" && car2 !="roadster")
+		return false;
 	
-	else if(car1 == 'SUV' && car2 != 'roadster' && car2 != 'pickup' && car2 != 'wagon' && car2 != 'sedan')
-        return false;
+	else if (car1 == "pickup" && car2 != "roadster" && car2 != "pickup")
+		return false;
+	
+	else if (car1 == "suv" && car2 != "roadster" && car2 != "pickup" && car2 != "suv")
+		return false;
+	
+	else if (car1 == "wagon" && car2 != "roadster" && car2 != "pickup" && car2 != "suv" && car2 != "wagon")
+		return false;
+	
+	else if (car1 == car2){
+		if (yearComparator(auto1, auto2))
+			return false;
+		else 
+			return true;
+	}
 
-    else if(car1 == 'Wagon' && car2 != 'roadster' && car2 != 'pickup' && car2 != 'suv' && car2 != 'sedan')
-        return false;
-
-    else
-        return true;
-
-
+	else
+		return true;
+	
 }
 
 
