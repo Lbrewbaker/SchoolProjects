@@ -157,6 +157,7 @@ function printArr(array){
 	console.log("We sorted the list of cars for you! (hopefully) ");
 	console.log("");
 	
+	console.log("*******");
 	console.log("The cars sorted by YEAR are:");
 	console.log("");	
 	var yearSort = sortArr(yearComparator, automobiles);
@@ -174,6 +175,7 @@ function printArr(array){
 	var typeSort = sortArr(typeComparator, automobiles);
 	printArr(typeSort);
 	console.log("");
-
+	
+	console.log("*******");
 	console.log("Thats all folks!");
 
