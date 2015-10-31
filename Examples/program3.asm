@@ -21,16 +21,13 @@ prompt2		BYTE	"Greetings, ", 0
 prompt3		BYTE	"Please enter a number between -100 and -1 : ", 0
 prompt4		BYTE	"Entere a non-negative number to see the results. ", 0
 prompt5		BYTE	"Enter a number: ", 0
-prompt7		BYTE	" valid number(s) enterred ", 0
-prompt8		BYTE	"The sum of your numbers is ", 0
-prompt9		BYTE	"The rounded average is ", 0
-prompt10	BYTE	"The float average is ", 0
-prompt11	BYTE	"There were ", 0
+prompt6		BYTE	"The sum of your numbers is ", 0
+prompt7		BYTE	"The rounded average is ", 0
+prompt8		BYTE	"The float average is ", 0
 toolow		BYTE	"Number too low, please try again ", 0
 invalid2	BYTE	"Please enter a number ", 0
 goodbye		BYTE	"Thanks for playing!", 0
 goodbye1	BYTE	"So long, ", 0
-
 numcount	SDWORD	?
 sumcount	SDWORD	?	
 average		SDWORD	?
@@ -38,8 +35,10 @@ floatnumcount	REAL8	?
 floatsumcount	REAL8	?
 floataverage	REAL4	?
 
+
 .code
 main PROC
+
 
 ;Introductions
 	mov		edx, OFFSET intro
@@ -66,7 +65,6 @@ main PROC
 
 ;get the users numbers and input
 	mov		numcount, 1 	;set the number count initially to 1, will increment with each additional pass
-
 getNumber:
 	mov		edx, OFFSET prompt5
 	call	WriteString
@@ -75,7 +73,7 @@ getNumber:
 	jl		numLow;
 	cmp		eax, UPPERLIMIT
 	jg		results
-	call	goodNumber			;jumps to calculate average if numbers are within range
+	call	calcAverage			;jumps to calculate average if numbers are within range
 
 numLow:
 	;displays an error message if the number is too low and loops back to the get number section
@@ -84,14 +82,11 @@ numLow:
 	call	CrLf
 	call	getNumber
 
-goodNumber:
+calcAverage:
+	;this is called each time to adjust the average based on how many numbers have been entered so far
 	inc		numcount
 	add		sumcount, eax
 	dec		numcount
-	call	calcAverage
-
-calcAverage:
-	;this is called each time to adjust the average based on how many numbers have been entered so far
 	mov		eax, sumcount
 	cdq
 	mov		ebx, numcount
@@ -100,12 +95,14 @@ calcAverage:
 	fild	numcount			
 	fst		floatnumcount
 	cdq
+
 	fild	sumcount			
 	fst		floatsumcount
 	fdiv	ST(0), ST(1)		
 	fst		floataverage		
 	inc		numcount
 	call	getNumber
+
 
 results:
 ;displays the results
@@ -116,32 +113,25 @@ results:
 	jle		getNumber
 
 	;else print the results
-	mov		edx, OFFSET prompt11
-	call	WriteString
-	dec		numcount
-	dec		numcount
-	mov		numcount, eax
-	call	WriteDec
-	mov		edx, OFFSET prompt7
-	call	WriteString
 	call	CrLf
-	mov		edx, OFFSET prompt8
+	mov		edx, OFFSET prompt6
 	call	WriteString
 	mov		eax, sumcount
 	call	WriteInt
 	call	CrLf
-	mov		edx, OFFSET prompt9
+	mov		edx, OFFSET prompt7
 	call	WriteString
 	mov		eax, average
 	call	WriteInt
 	call	CrLf
-	mov		edx, OFFSET prompt10
+	mov		edx, OFFSET prompt8
 	call	WriteString
 	call	CrLf
-	mov	eax, floataverage
+	mov		eax, floataverage
 	call	WriteFloat
 	call	CrLf
 	call	CrLf
+
 
 	;displays the goodbye message
 	mov		edx, OFFSET goodbye
@@ -156,7 +146,6 @@ results:
 	exit		; exit to operating system
 
 main ENDP
-
 ; (insert additional procedures here)
 
 END main
