@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	<meta charset="UTF-8">
+	<title>Ajax Testing</title>
+	<script src="weather.js"></script>
+  </head>
+  
+  <body>
+    <form>
+      <fieldset>
+        <legend>Current Weather Conditions, powered by openweathermap.org</legend>
+        <label for="zipSubmit">Enter Zip Code </label>
+        <input type="text" name="zipSubmit" id="zipSubmit">
+        <input type="submit" id="submit">
+	<p> Or </p>
+        <label for="citySubmit">Enter a US City (NO spaces) </label>
+        <input type="text" name="citySubmit" id="citySubmit">
+        <input type="submit" id="submit">
+      </fieldset>
+    </form>
+	
+    <div>
+      <h2>Current Conditions:</h2>
+	  
+	<span id="cityName", class="output"></span>
+	<span id="countryName", class="output"></span>
+      <ul>
+        <li><span>Time of data calculation: </span><span id="date", class="output"></span></li>
+        <li><span>Main Temperature (Farenheit): </span><span id="temp", class="output"></span></li>
+        <li><span>City Longitude: </span><span id="lon", class="output"></span></li>
+        <li><span>City Latitude: </span><span id="lat", class="output"></span></li>
+        <li><span>Time of Sunrise: </span><span id="sunrise", class="output"></span></li>
+        <li><span>Time of Sunset: </span><span id="sunset", class="output"></span></li>
+        <li><span>Humidity: </span><span id="humidity", class="output"></span><span> %</span></li>
+        <li><span>Wind Speed(mph): </span><span id="windSpeed", class="output"></span></li>
+        <li><span>Wind Angle: </span><span id="windAngle", class="output"></span></li>
+        <li><span>Cloud coverage: </span><span id="clouds", class="output"></span><span> %</span></li>
+      </ul>
+    </div>
+	
+	
+	
+	<!  Form Submit Section>
+	 <form>
+	<script src="submit.js"></script>
+	<fieldset>
+        <legend>Post Submit Test</legend>
+        <label for="input"></label>
+        <input type="text" name="input" id="input">
+        <input type="submit" id="postSubmit">
+    </fieldset>
+    </form>
+    <div>
+      <h2>Result</h2>
+      <ul>
+        <li><span>Sent to server:</span><span id="inputPrint"></span></li>
+        <li><span>Result from server:</span><span id="returned"></span></li>
+      </ul>
+    </div>
+	
+  </body>
+</html>
