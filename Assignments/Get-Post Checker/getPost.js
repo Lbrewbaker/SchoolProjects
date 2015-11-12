@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.engine('handlebars', handlebars.engine);
 
 app.set('view engine', 'handlebars');
-app.set('port', 3000);
+app.set('port', 9001 );
 
 app.post('/', function(req, res) {
     var context = getContext('GET', req, false);
@@ -20,6 +20,7 @@ app.post('/', function(req, res) {
 
 app.get('/', function(req, res) {
     var context = getContext('GET', req, false);
+	context.isPost = false;
     res.render('getPost', context);
 });
 
