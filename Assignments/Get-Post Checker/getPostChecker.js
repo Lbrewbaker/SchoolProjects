@@ -5,26 +5,32 @@ var bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
-
 app.engine('handlebars', handlebars.engine);
 
+//sets the port to 9001
 app.set('view engine', 'handlebars');
 app.set('port', 9001 );
 
+
+//handles post requests and creates an asynchronos request for post requests
 app.post('/', function(req, res) {
-    var context = getContext('GET', req, false);
-    context.post = getContext('POST', req, true);
+    var context = fillContext('GET', req, false);
+    context.post = fillContext('POST', req, true);
     context.isPost = true;
-    res.render('getPost', context);
+    res.render('postPage', context);
 });
 
+
+//handles get requests
 app.get('/', function(req, res) {
-    var context = getContext('GET', req, false);
+    var context = fillContext('GET', req, false);
 	context.isPost = false;
-    res.render('getPost', context);
+    res.render('postPage', context);
 });
 
-function getContext(type, req, isPost) {
+
+//function to fill context based on what parameters the user sends.
+function fillContext(type, req, isPost) {
     var params = [];
     if (isPost) {
         reqType = req.body;

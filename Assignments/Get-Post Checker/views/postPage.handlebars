@@ -1,10 +1,8 @@
 <div id="getPostDiv">
-<p> Data displayed as Name : Value 
-<br>
-<br>
-		<!  POST Data:>
+
+	<!  POST Data:>
 	{{#if isPost}}
-		<p><b> POST </b>received:</p>
+		<h1>This is a POST request</h1>
 		
 		{{#each post.params}}
 		<ul>
@@ -12,9 +10,9 @@
 		{{/each}}
 		</ul>
 		
-		<!  GET Data:>
+	<!  GET Data:>
 		{{else}}
-		<p><b> GET </b>received:</p>
+		<h1>This is a GET request</h1>
 		
 		{{#each params}}
 		<ul>
