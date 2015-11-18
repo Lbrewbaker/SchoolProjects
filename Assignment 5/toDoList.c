@@ -29,6 +29,23 @@
 int compare(TYPE left, TYPE right)
 {
     /*FIXME: write this*/
+    TaskP lefty;
+    TaskP righty;
+    lefty = (TaskP)left;
+    righty = (TaskP)righty;
+
+    if(lefty->priority < righty->priority){
+        return -1;
+    }
+
+    else if(lefty->priority > righty->priority){
+        return 1;
+
+    }
+
+    else{
+        return 0;
+    }
 
 
 }
@@ -59,6 +76,12 @@ void print_type(TYPE val)
 TaskP createTask (int priority, char *desc)
 {
   /*FIXME: Write this */
+  TaskP task = malloc(sizeof(TaskP));
+
+  /* copy and return new task */
+  strcpy(task->description, desc);
+  task->priority = priority;
+  return task;
 }
 
 /*  Save the list to a file
@@ -110,7 +133,7 @@ void loadList(DynArr *heap, FILE *filePtr)
     {
       sscanf(line, "%d\t%[^\n]", &priority, desc);
       task = createTask(priority, desc);
-      addHeap(heap, task, compare);
+      addHeap(heap, task);
     } /* should use feof to make sure it found eof and not error*/
 
 }
@@ -142,7 +165,7 @@ void printList(DynArr *heap)
       /* print the task */
       printf("%d:  %s\n\n", task->priority, task->description);
       /* remove the task , but let's not free up the memory it's pointing to since old Arr is using it!*/
-      removeMinHeap(temp, compare);
+      removeMinHeap(temp);
     }
   /* free the temp list */
   deleteDynArr(temp);

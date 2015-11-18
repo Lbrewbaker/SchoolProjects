@@ -36,23 +36,23 @@ int main(int argc, const char * argv[])
 	task10 = createTask(0, "task 10");
 
 	/* add tasks to the dynamic array */
-	addHeap(mainList, task1, compare);
-	addHeap(mainList, task2, compare);
-	addHeap(mainList, task3, compare);
-	addHeap(mainList, task4, compare);
-	addHeap(mainList, task5, compare);
-	addHeap(mainList, task6, compare);
-	addHeap(mainList, task7, compare);
-	addHeap(mainList, task8, compare);
-	addHeap(mainList, task9, compare);
-	addHeap(mainList, task10, compare);
+	addHeap(mainList, task1);
+	addHeap(mainList, task2);
+	addHeap(mainList, task3);
+	addHeap(mainList, task4);
+	addHeap(mainList, task5);
+	addHeap(mainList, task6);
+	addHeap(mainList, task7);
+	addHeap(mainList, task8);
+	addHeap(mainList, task9);
+	addHeap(mainList, task10);
 
 
 	printf("Before Sort Called \n");
         printDynArr(mainList, print_type);
 
 	/* sort tasks */
-	sortHeap(mainList, compare);
+	sortHeap(mainList);
 
 	printf("After Sort Called \n");
 

@@ -3,16 +3,17 @@
 #define DYNAMIC_ARRAY_INCLUDED 1
 #include "type.h"
 
+# ifndef TYPE
+# define TYPE      void*
+# endif
 
-/* function used to compare two TYPE values to each other */
+/* function used to compare two TYPE values to each other, define this in your compare.c file */
 int compare(TYPE left, TYPE right);
-
-typedef int (*comparator)(void *left, void*right);
-typedef void (*printer) (void *);
+/* function used to print TYPE values, define this in your compare.c file */
+void print_type(TYPE curval);
 
 typedef struct DynArr DynArr;
-struct DynArrIter;
-
+struct bag;
 
 /* Dynamic Array Functions */
 DynArr *createDynArr(int cap);
@@ -25,7 +26,6 @@ TYPE getDynArr(DynArr *v, int pos);
 void putDynArr(DynArr *v, int pos, TYPE val);
 void swapDynArr(DynArr *v, int i, int  j);
 void removeAtDynArr(DynArr *v, int idx);
-void addAtDynArr(DynArr *v, int idx, TYPE val);
 
 /* Stack interface. */
 int isEmptyDynArr(DynArr *v);
@@ -33,30 +33,20 @@ void pushDynArr(DynArr *v, TYPE val);
 TYPE topDynArr(DynArr *v);
 void popDynArr(DynArr *v);
 
-/* Ordered Bag Interface */
-void addDynArrOrd(DynArr *v, TYPE val, comparator compare);
-int containsDynArrOrd(DynArr *v, TYPE val, comparator compare);
-void removeDynArrOrd(DynArr *v, TYPE val, comparator compare);
-
 /* Bag Interface */
-int containsDynArr(DynArr *v, TYPE val, comparator compare);
-void removeDynArr(DynArr *v, TYPE val, comparator compare);
+int containsDynArr(DynArr *v, TYPE val);
+void removeDynArr(DynArr *v, TYPE val);
+
 
 /* Heap-based Priority Queue Interface */
 TYPE getMinHeap(DynArr *heap);
-void addHeap(DynArr *heap, TYPE node, comparator compare);
-void removeMinHeap(DynArr *heap, comparator compare);
-void sortHeap(DynArr *heap, comparator compare);
-
-/* Iterator Interface */
-struct DynArrIter *createDynArrIter(struct DynArr *da);
-void  initDynArrIter (struct DynArr *da, struct DynArrIter *itr);
-int hasNextDynArrIter (struct DynArrIter *itr);
-TYPE nextDynArrIter (struct DynArrIter *itr);
-void removeDynArrIter (struct DynArrIter *itr);
+void addHeap(DynArr *heap, TYPE node);
+void removeMinHeap(DynArr *heap);
+void sortHeap(DynArr *heap);
 
 
 /* Utility function*/
 void copyDynArr(DynArr *source, DynArr *destination);
-void printDynArr(DynArr *v, printer print);
+
+
 #endif

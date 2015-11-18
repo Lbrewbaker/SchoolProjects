@@ -11,6 +11,12 @@ struct DynArr
 	int capacity;	/* capacity ofthe array */
 };
 
+struct bag
+{
+	struct DynArr *dynArr;
+};
+
+
 /* ************************************************************************
 	Dynamic Array Functions
 ************************************************************************ */
@@ -181,7 +187,6 @@ void addDynArr(DynArr *v, TYPE val)
 	post:	no changes to the dyn Array
 	ret:	value stored at index pos
 */
-
 TYPE getDynArr(DynArr *v, int pos)
 {
 	assert(v!=0);
@@ -199,7 +204,7 @@ TYPE getDynArr(DynArr *v, int pos)
 	param:	val		the value to insert
 	pre:	v is not null
 	pre:	v is not empty
-	pre:	pos >= 0 and pos < cap of the array
+	pre:	pos >= 0 and pos < size of the array
 	post:	index pos contains new value, val
 */
 void putDynArr(DynArr *v, int pos, TYPE val)
@@ -233,39 +238,6 @@ void swapDynArr(DynArr *v, int i, int  j)
 	v->data[j] = temp;
 
 }
-/* Inserts an element into the dynamic array at the specified location
-
-   param: v         pointer to the dynamic array
-   param: idx       location to insert
-   param:  val      value to insert
-   pre:             v is not null
-   pre:             idx >=0 idx<=size
-   post:            size has increased by one
-   post:            element at idx  =  value
-*/
-
-void addAtDynArr(DynArr *v, int idx, TYPE val)
-{
-  assert(v!= 0);
-  assert(idx >=0 && idx <= v->size);
-
-  int i;
-
-  /* Check to see if a resize is necessary */
-  if(v->size >= v->capacity)
-    _dynArrSetCapacity(v, 2 * v->capacity);
-
-  //Move elements down one
-  for(i = v->size; i > idx; i--)
-    v->data[i] = v->data[i-1];
-
-  //putDynArr(v, idx, val); //this will increase size
-  v->data[idx] = val;
-  v->size++;
-
-  assert(v->data[idx] == val);
-}
-
 
 /*	Remove the element at the specified location from the array,
 	shifts other elements back one to fill the gap
@@ -284,12 +256,8 @@ void removeAtDynArr(DynArr *v, int idx){
 	assert(idx < v->size);
 	assert(idx >= 0);
 
-   //Move all elements up
+   /* move elements up */
 
-	/* My loop does not execute when idx == size-1
-	 * so I don't have to worry about coping an element outside the array
-	 * into that idx!
-	 */
    for(i = idx; i < v->size-1; i++){
       v->data[i] = v->data[i+1];
    }
@@ -297,6 +265,12 @@ void removeAtDynArr(DynArr *v, int idx){
    v->size--;
 
 }
+
+
+
+/* ************************************************************************
+	Stack Interface Functions
+************************************************************************ */
 
 /*	Returns boolean (encoded in an int) demonstrating whether or not the
 	dynamic array stack has an item on it.
@@ -321,12 +295,6 @@ int isEmptyDynArr(DynArr *v)
 
 
 }
-
-
-/* ************************************************************************
-	Stack Interface Functions
-************************************************************************ */
-
 
 /* 	Push an element onto the top of the stack
 
@@ -387,7 +355,7 @@ void popDynArr(DynArr *v)
 	pre:	v is not empty
 	post:	no changes to the bag
 */
-int containsDynArr(DynArr *v, TYPE val, comparator compare)
+int containsDynArr(DynArr *v, TYPE val)
 {
 	int i = 0;
 
@@ -395,9 +363,9 @@ int containsDynArr(DynArr *v, TYPE val, comparator compare)
 	assert(!isEmptyDynArr(v));
 
 	for(i = 0; i < sizeDynArr(v); i++)
-          if((*compare)(v->data[i], val) == 0 )
-            return 1;
-        return 0;
+      if(compare(v->data[i], val) == 0)
+         return 1;
+      return 0;
 
 }
 
@@ -411,21 +379,20 @@ int containsDynArr(DynArr *v, TYPE val, comparator compare)
 	post:	val has been removed
 	post:	size of the bag is reduced by 1
 */
-void removeDynArr(DynArr *v, TYPE val, comparator compare)
+void removeDynArr(DynArr *v, TYPE val)
 {
 	int i = 0;
 	assert(v!=0);
 	assert(!isEmptyDynArr(v));
-	assert(containsDynArr(v,val, compare));  /* Design decision: Error if they try to remove something not in there! */
+	assert(containsDynArr(v,val));  /* Design decision: Error if they try to remove something not in there! */
 
 	for(i = 0; i < sizeDynArr(v); i++)
-          if((*compare)(v->data[i], val) == 0)
-            {
-              removeAtDynArr(v,i);
-              break;
-            }
+      if(compare(v->data[i], val) == 0)
+      {
+           removeAtDynArr(v,i);
+           break;
+      }
 }
-
 
 /*	Copy elements from a dynamic array to another dynamic array
 
@@ -437,79 +404,24 @@ void removeDynArr(DynArr *v, TYPE val, comparator compare)
 */
 void copyDynArr(DynArr *source, DynArr *destination)
 {
-  int i;
-  assert(source->size > 0);
-  _initDynArr(destination, source->capacity);
-  /* copy elements to destination array */
-  for(i = 0; i < source->size; i++)
-    destination->data[i] = source->data[i];
+  	int i;
+	assert(source->size > 0);
+	_initDynArr(destination, source->capacity);
+	/* copy elements to destination array */
+	for(i = 0; i < source->size; i++)
+		destination->data[i] = source->data[i];
 
-  destination->size = source->size;
-}
-
-/**************************************************************************
- Ordered Bag Interface:  Note, these are here for you to use in place of
-the Heap functions as if you wish to work on the toDoList application
-before completing the Heap.   The Heap functions can be replaced as:
-
-addHeap -> addDynArrOrd
-removeMinHeap -> removeAtDynArr(v, 0)
-getMinHeap -> getDynArr (v, 0)
-**************************************************************************/
-
-int _binarySearch(struct DynArr *v, TYPE val, comparator compare)
-{
-        int low  = 0;
-        int high  = v->size;
-        int mid;
-
-        while(low < high)
-        {
-                mid = low + (high-low)/2;
-                if((*compare)(v->data[mid], val) == -1)
-                  //if(LT(v->data[mid], val))
-                        low = mid + 1;
-                else high = mid;
-        }
-        return low;
-}
-
-/* Ordered Bag Interface */
-
-void addDynArrOrd(DynArr *v, TYPE val, comparator compare)
-{
-  int idx = _binarySearch(v, val, compare);
-  printf("Adding to index = %d\n", idx);
-  addAtDynArr(v,idx,val);
+	destination->size = source->size;
 }
 
 
-int containsDynArrOrd(DynArr *v, TYPE val, comparator compare){
-  int idx = _binarySearch(v, val, compare);
-  // rem: if it's not in there, it'll return size.  This could hold a previously added value...so must check the index!
-  if (EQ(v->data[idx],val) && idx < v->size)
-    return 1;
-  else return 0;
-}
-
-
-void removeDynArrOrd(DynArr *v, TYPE val, comparator compare)
-{
-  int idx = _binarySearch(v, val, compare);
-  if(EQ(v->data[idx], val))
-    removeAtDynArr(v, idx);
-}
-
-
-
-
-/*************************************************************************
-   Heap-based Priority Queue Implementation
+/* ************************************************************************
+	Heap-based Priority Queue Implementation
 ************************************************************************ */
 
 /* internal function prototypes */
-int _smallerIndexHeap(DynArr *heap, int i, int j, comparator compare);
-void _adjustHeap(DynArr *heap, int max, int pos, comparator compare);
+int _smallerIndexHeap(DynArr *heap, int i, int j);
+void _adjustHeap(DynArr *heap, int max, int pos);
 
 /*	Get the index of the smaller node between two nodes in a heap
 
@@ -519,9 +431,16 @@ void _adjustHeap(DynArr *heap, int max, int pos, comparator compare);
 	pre:	i < size and j < size
 	ret:	the index of the smaller node
 */
-int _smallerIndexHeap(DynArr *heap, int i, int j, comparator compare)
+int _smallerIndexHeap(DynArr *heap, int i, int j)
 {
-  /* FIXME Write this */
+  /* FIXME */
+  assert(i < sizeDynArr(heap));
+  assert(j < sizeDynArr(heap));
+  if(compare (heap->data[i], heap->data[j]) <= 0){
+    return i;
+  }
+  else
+    return j;
 }
 
 /*	Get the first node, which has the min priority, from the heap
@@ -532,8 +451,10 @@ int _smallerIndexHeap(DynArr *heap, int i, int j, comparator compare)
 */
 TYPE getMinHeap(DynArr *heap)
 {
+  /* FIXME */
+  assert(heap != 0);
+  return getDynArr(heap, 0);
 
-  /* FIXME: Write This */
 }
 
 /*	Add a node to the heap
@@ -543,9 +464,31 @@ TYPE getMinHeap(DynArr *heap)
 	pre:	heap is not null
 	post:	node is added to the heap
 */
-void addHeap(DynArr *heap, TYPE val, comparator  compare)
+void addHeap(DynArr *heap, TYPE val)
 {
-  /* FIXME: Write This */
+    /* FIXME */
+    assert(heap != 0);
+
+    /* pointers used to swap around values as needed */
+    int current;
+    int parent;
+
+    /* add value to heap*/
+    addDynArr(heap, val);
+
+    current = sizeDynArr(heap) -1;
+    while(current != 0){
+        parent = (current -1) / 2;
+
+        /* compare and swap as needed */
+        if(compare(getDynArr(heap, current), getDynArr(heap, parent)) == -1){
+            swapDynArr(heap, current, parent);
+            current = parent;
+        }
+        else{
+            return;
+        }
+    }
 }
 
 /*	Adjust heap to maintain heap property
@@ -556,10 +499,36 @@ void addHeap(DynArr *heap, TYPE val, comparator  compare)
 	pre:	max <= size
 	post:	heap property is maintained for nodes from index pos to index max-1  (ie. up to, but not including max)
 */
-
-void _adjustHeap(DynArr *heap, int max, int pos, comparator compare)
+void _adjustHeap(DynArr *heap, int max, int pos)
 {
-  /* FIXME: Write this */
+   /* FIXME */
+
+    /* make sure the heap isnt bigger than max size */
+    assert(max <= sizeDynArr(heap));
+
+    /* setting left and right positions */
+    int left = (2 * pos) + 1;
+    int right = (2 * pos) + 2;
+    int smallest;
+
+    /* perform the adjustments */
+    if (right < max){
+        smallest = _smallerIndexHeap(heap, left, right);
+        if(compare(heap->data[smallest], heap->data[pos]) == -1){
+           swapDynArr(heap, pos, smallest);
+           _adjustHeap(heap, max, smallest);
+        }
+    }
+
+    else if(left <= max){
+        if(compare(heap->data[left], heap->data[pos]) == -1){
+            swapDynArr(heap, pos, left);
+            _adjustHeap(heap, max, left);
+        }
+    }
+
+
+
 }
 
 /*	Remove the first node, which has the min priority, from the heap
@@ -568,9 +537,19 @@ void _adjustHeap(DynArr *heap, int max, int pos, comparator compare)
 	pre:	heap is not empty
 	post:	the first node is removed from the heap
 */
-void removeMinHeap(DynArr *heap, comparator compare)
+void removeMinHeap(DynArr *heap)
 {
-  /* FIXME: Write this */
+   /* FIXME */
+   assert(heap != 0);
+
+   int last = sizeDynArr(heap);
+   if(last != 0){
+        putDynArr(heap, 0, getDynArr(heap, last -1));
+        removeAtDynArr(heap, last - 1);
+        _adjustHeap(heap, sizeDynArr(heap) - 1, 0);
+
+   }
+
 }
 
 /* builds a heap from an arbitrary dynArray
@@ -580,9 +559,15 @@ void removeMinHeap(DynArr *heap, comparator compare)
     post: v is a proper heap
 */
 
-void _buildHeap(DynArr *heap, comparator compare)
+void _buildHeap(DynArr *heap)
 {
-  /* FIXME: Write This */
+    /* FIXME */
+    assert(heap != 0);
+    /* set max size for heap */
+    int maxSize = sizeDynArr(heap) - 1;
+    for(int i = maxSize; i >= 0; i--){
+        _adjustHeap(heap, maxSize, i);
+    }
 }
 /*
     In-place sort of the heap
@@ -592,78 +577,14 @@ void _buildHeap(DynArr *heap, comparator compare)
     post: the dynArr is in reverse sorted order
 */
 
-void sortHeap(DynArr *heap, comparator compare)
+void sortHeap(DynArr *heap)
 {
-  /* FIXME: Write this */
-}
-
-
-
-
-/* Iterator Interface */
-
-struct DynArrIter {
-	int	cur;
-	struct DynArr *da;
-};
-
-/* Initialize an iterator */
-
-void  initDynArrIter (struct DynArr *da, struct DynArrIter *itr) {
-	itr->da = da;
-	itr->cur = 0;
-}
-
-/* Create a new iterator struct and return it */
-
-struct DynArrIter *createDynArrIter(struct DynArr *da){
-	struct DynArrIter *newItr = malloc(sizeof(struct DynArrIter));
-	assert(newItr != 0);
-	initDynArrIter(da, newItr);
-	return(newItr);
-}
-
-
-int hasNextDynArrIter (struct DynArrIter *itr) {
-
-	if(itr->cur < itr->da->size)
-		return(1);
-	else return (0);
+   /* FIXME */
+   _buildHeap(heap);
+   for(int i = sizeDynArr(heap) -1; i > 0; i--){
+        swapDynArr(heap, 0, i);
+        _adjustHeap(heap, i-1, 0);
+   }
 
 }
 
-/* returns the next value in the collection */
-TYPE nextDynArrIter (struct DynArrIter *itr) {
-	TYPE val = itr->da->data[itr->cur++];
-	//itr->cur++;
-	return(val);
-}
-
-
-void removeDynArrIter (struct DynArrIter *itr) {
-	itr->cur--;
-	removeAtDynArr(itr->da , itr->cur);
-}
-
-
-
-/*
-   Print the dynamic array contents.  This requires that PRINT_STR be defined.
-
-*/
-void printDynArr(DynArr *v, printer print)
-{
-  int i;
-
-  printf("\nArray size = %d\n", v->size);
-  printf("Array capacity  = %d\n", v->capacity);
-  printf("Array Contents: \n ====================== \n");
-  for(i=0; i < v->size; i++)
-    {
-      printf("DA[%d] == ",i);
-      (*print)(v->data[i]);
-      // printf(PRINT_STR, (CAST_STR) v->data[i]);
-      printf("\n");
-    }
-
-}
