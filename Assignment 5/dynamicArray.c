@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include "dynamicArray.h"
 
+//test commit
+
 struct DynArr
 {
 	TYPE *data;		/* pointer to the data array */
