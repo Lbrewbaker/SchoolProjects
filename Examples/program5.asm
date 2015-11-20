@@ -37,7 +37,7 @@ main PROC
 call		Randomize			;irvines random number generator
 call		introductions		;calls the introduction sequence
 call		input				;calls the input sequence
-
+call		arrayfill			;calls the array fill sequence
 
 
 	exit		; exit to operating system
@@ -78,7 +78,28 @@ call	input
 goodNum: ;if number is within range
 mov		inputNum, eax
 ret
+input ENDP
 
+;fill array with the contents
+arrayfill PROC
 
+mov		ecx, inputNum		;set the counter based on users input
+mov		esi, 0				;reset ESI
+
+randomNumGen:
+mov		eax, HI
+sub		eax, LO
+inc		eax
+call	RandomRange
+add		eax, LO				;a random number should now be in the EAX position
+
+mov		array[esi*sizeof DWORD], eax	;moves the random number into the array allocation
+inc		esi								;prepares for next number
+loop	randomNumGen
+ret
+
+arrayfill ENDP
+
+printArray PROC
 
 END main
