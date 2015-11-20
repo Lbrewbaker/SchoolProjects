@@ -12,7 +12,7 @@ MIN = 5
 MAX = 200
 LOW = 1
 HI = 999
-DISPLAY = 10
+LINEDISPLAY = 10
 
 .data
 
@@ -38,6 +38,24 @@ call		Randomize			;irvines random number generator
 call		introductions		;calls the introduction sequence
 call		input				;calls the input sequence
 call		arrayfill			;calls the array fill sequence
+
+;prints the array
+mov			edx, OFFSET dispUnsort
+call		WriteString		
+mov			ecx, OFFSET	array
+call		printArray
+call		CrLf
+
+;sort the array
+call		sortArray
+mov			edx, OFFSET dispSort
+call		WriteString
+mov			ecx, OFFSET array
+call		printArray
+
+;display median calculation
+
+
 
 
 	exit		; exit to operating system
@@ -100,6 +118,53 @@ ret
 
 arrayfill ENDP
 
+
+;sequence to print the array to the console
 printArray PROC
+
+;arrange register to print correctly
+mov		eax, O
+mov		esi, 0
+mov		counter, 0
+mov		ecx, inputNum
+
+display:
+cmp	counter, LINEDISPLAY ;compares the counter to the line display limit
+je		newLine
+
+	newLine:
+	mov		counter, 0
+	call	CrLf
+
+mov		eax, array[esi*sizeof DWORD]		;gets number at the position specified by counter
+call	WriteDec							;displays that number
+mov		edx, OFFSET arraySpace		
+call	WriteString
+inc		esi										
+inc		counter
+loop	display								;loops to display again
+call	CrLf
+
+
+ret											;returns to main
+printArray ENDP
+
+
+;I use a bubble sort to sort array inputs because it is typically the fastest in terms of execution time
+;I found an algorithm online that I am going to use for this purpose found here: http://bcs.solano.edu/workarea/jurrutia/Coursework/CIS%2020%20-%20Assembly%20Programming/Irvine%20X86%20Processors/Ex%20Prgms%20and%20Libs/Examples/ch09/32%20bit/Binary_Search/BubbleSort.asm
+sortArray PROC
+
+mov		ecx, InputNum
+dec		ecx
+
+L1:
+push	ecx
+mov		esim OFFSET array
+
+L2:
+
+
+sortArray ENDP
+
 
 END main
