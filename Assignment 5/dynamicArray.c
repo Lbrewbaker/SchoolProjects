@@ -4,7 +4,6 @@
 #include <stdio.h>
 #include "dynamicArray.h"
 
-//test commit
 
 struct DynArr
 {
@@ -229,7 +228,7 @@ void putDynArr(DynArr *v, int pos, TYPE val)
 void swapDynArr(DynArr *v, int i, int  j)
 {
 	TYPE  temp;
-	assert(v!=0);
+	assert(v != 0);
 	assert(i < v->size);
 	assert(j < v->size);
 	assert(i >= 0);
@@ -472,16 +471,13 @@ void addHeap(DynArr *heap, TYPE val)
     assert(heap != 0);
 
     /* pointers used to swap around values as needed */
-    int current;
+    int current = sizeDynArr(heap);
     int parent;
 
     /* add value to heap*/
     addDynArr(heap, val);
-
-    current = sizeDynArr(heap) -1;
     while(current != 0){
         parent = (current -1) / 2;
-
         /* compare and swap as needed */
         if(compare(getDynArr(heap, current), getDynArr(heap, parent)) == -1){
             swapDynArr(heap, current, parent);
@@ -506,30 +502,38 @@ void _adjustHeap(DynArr *heap, int max, int pos)
    /* FIXME */
 
     /* make sure the heap isnt bigger than max size */
+    assert(heap != NULL);
     assert(max <= sizeDynArr(heap));
 
     /* setting left and right positions */
-    int left = (2 * pos) + 1;
-    int right = (2 * pos) + 2;
-    int smallest;
+    int left = ((2 * pos) + 1);
+    int right = ((2 * pos) + 2);
+    int smallest = -1;
+
+
 
     /* perform the adjustments */
-    if (right < max){
-        smallest = _smallerIndexHeap(heap, left, right);
-        if(compare(heap->data[smallest], heap->data[pos]) == -1){
-           swapDynArr(heap, pos, smallest);
-           _adjustHeap(heap, max, smallest);
+    if (right <= max){
+        if(left < max){
+            smallest = _smallerIndexHeap(heap, left, right);
         }
-    }
 
+        else{
+            smallest = right;
+        }
+        if(compare(getDynArr(heap, smallest), getDynArr(heap, pos)) == -1){
+            swapDynArr(heap, pos, smallest);
+        }
+        _adjustHeap(heap, max, smallest);
+
+    }
     else if(left <= max){
-        if(compare(heap->data[left], heap->data[pos]) == -1){
+        if(compare(getDynArr(heap, left), getDynArr(heap, pos)) == -1){
             swapDynArr(heap, pos, left);
-            _adjustHeap(heap, max, left);
         }
+        _adjustHeap(heap, max, left);
+
     }
-
-
 
 }
 
@@ -583,9 +587,9 @@ void sortHeap(DynArr *heap)
 {
    /* FIXME */
    _buildHeap(heap);
-   for(int i = sizeDynArr(heap) -1; i > 0; i--){
-        swapDynArr(heap, 0, i);
-        _adjustHeap(heap, i-1, 0);
+   for(int i = (sizeDynArr(heap) -1); i > 0; i--){
+        swapDynArr(heap, i, 0);
+        _adjustHeap(heap, i, 0);
    }
 
 }

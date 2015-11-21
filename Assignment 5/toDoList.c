@@ -32,7 +32,7 @@ int compare(TYPE left, TYPE right)
     TaskP lefty;
     TaskP righty;
     lefty = (TaskP)left;
-    righty = (TaskP)righty;
+    righty = (TaskP)right;
 
     if(lefty->priority < righty->priority){
         return -1;
@@ -76,12 +76,17 @@ void print_type(TYPE val)
 TaskP createTask (int priority, char *desc)
 {
   /*FIXME: Write this */
-  TaskP task = malloc(sizeof(TaskP));
+    struct Task *newTask;
+    newTask = malloc(sizeof(struct Task));
+    assert(newTask != 0);
 
-  /* copy and return new task */
-  strcpy(task->description, desc);
-  task->priority = priority;
-  return task;
+    /* set priority for task */
+    newTask->priority = priority;
+
+    /* copy and return new task */
+    strcpy(newTask->description, desc);
+
+    return newTask;
 }
 
 /*  Save the list to a file
