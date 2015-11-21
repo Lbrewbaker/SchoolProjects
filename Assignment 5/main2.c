@@ -49,7 +49,7 @@ int main(int argc, const char * argv[])
 
 
 	printf("Before Sort Called \n");
-        printList(mainList);
+         printDynArr(mainList, print_type);
 
 	/* sort tasks */
 	sortHeap(mainList);
@@ -57,7 +57,7 @@ int main(int argc, const char * argv[])
 	printf("After Sort Called \n");
 
 	/* print sorted tasks from the dynamic array */
-       printList(mainList);
+          printDynArr(mainList, print_type);
 
 	return 0;
 }

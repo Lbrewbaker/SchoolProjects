@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <string.h>
 #include "toDoList.h"
+#include "dynamicArray.h"
 
 
 int main (int argc, const char * argv[])
@@ -50,7 +51,7 @@ int main (int argc, const char * argv[])
             printf("Please enter a description: ");
             /* gets description from user*/
             if(fgets(desc, sizeof(desc), stdin) != NULL){
-                nlptr = strchr(desc, '/n');
+                nlptr = strchr(desc, '\n');
                 if(nlptr){
                     *nlptr = '\0';
                 }
@@ -97,14 +98,15 @@ int main (int argc, const char * argv[])
 
         /* print the list */
         case 'p':
-            if(sizeDynArr(mainList) > 0){
-                printList(mainList);
+            if(sizeDynArr(mainList) <= 0){
+                printf("Your list is empty \n\n ");
+                break;
             }
 
-            else
-                printf("Your list is empty \n\n ");
-
-            break;
+            else{
+                printList(mainList);
+                break;
+            }
 
         /* save list to a file */
         case 's':

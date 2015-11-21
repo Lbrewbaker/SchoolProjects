@@ -7,13 +7,16 @@
 # define TYPE      void*
 # endif
 
-/* function used to compare two TYPE values to each other, define this in your compare.c file */
+
+/* function used to compare two TYPE values to each other */
 int compare(TYPE left, TYPE right);
-/* function used to print TYPE values, define this in your compare.c file */
-void print_type(TYPE curval);
+
+typedef int (*comparator)(void *left, void*right);
+typedef void (*printer) (void *);
 
 typedef struct DynArr DynArr;
-struct bag;
+struct DynArrIter;
+
 
 /* Dynamic Array Functions */
 DynArr *createDynArr(int cap);
@@ -33,6 +36,12 @@ void pushDynArr(DynArr *v, TYPE val);
 TYPE topDynArr(DynArr *v);
 void popDynArr(DynArr *v);
 
+/* Ordered Bag Interface */
+void addDynArrOrd(DynArr *v, TYPE val);
+int containsDynArrOrd(DynArr *v, TYPE val);
+void removeDynArrOrd(DynArr *v, TYPE val);
+
+
 /* Bag Interface */
 int containsDynArr(DynArr *v, TYPE val);
 void removeDynArr(DynArr *v, TYPE val);
@@ -44,9 +53,16 @@ void addHeap(DynArr *heap, TYPE node);
 void removeMinHeap(DynArr *heap);
 void sortHeap(DynArr *heap);
 
+/* Iterator Interface */
+struct DynArrIter *createDynArrIter(struct DynArr *da);
+void  initDynArrIter (struct DynArr *da, struct DynArrIter *itr);
+int hasNextDynArrIter (struct DynArrIter *itr);
+TYPE nextDynArrIter (struct DynArrIter *itr);
+void removeDynArrIter (struct DynArrIter *itr);
 
 /* Utility function*/
 void copyDynArr(DynArr *source, DynArr *destination);
+void printDynArr(DynArr *v, printer print);
 
 
 #endif

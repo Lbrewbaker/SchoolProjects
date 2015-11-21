@@ -435,12 +435,12 @@ void _adjustHeap(DynArr *heap, int max, int pos);
 int _smallerIndexHeap(DynArr *heap, int i, int j)
 {
   /* FIXME */
-  assert(i < sizeDynArr(heap));
-  assert(j < sizeDynArr(heap));
-  if(compare (heap->data[i], heap->data[j]) <= 0){
-    return i;
-  }
-  else
+    assert(i < sizeDynArr(heap));
+    assert(j < sizeDynArr(heap));
+    if(compare(getDynArr(heap, i), getDynArr(heap, j)) == -1){
+        return i;
+    }
+
     return j;
 }
 
@@ -454,6 +454,7 @@ TYPE getMinHeap(DynArr *heap)
 {
   /* FIXME */
   assert(heap != 0);
+  assert(sizeDynArr(heap) > 0);
   return getDynArr(heap, 0);
 
 }
@@ -469,24 +470,12 @@ void addHeap(DynArr *heap, TYPE val)
 {
     /* FIXME */
     assert(heap != 0);
-
-    /* pointers used to swap around values as needed */
-    int current = sizeDynArr(heap);
-    int parent;
-
-    /* add value to heap*/
     addDynArr(heap, val);
-    while(current != 0){
-        parent = (current -1) / 2;
-        /* compare and swap as needed */
-        if(compare(getDynArr(heap, current), getDynArr(heap, parent)) == -1){
-            swapDynArr(heap, current, parent);
-            current = parent;
-        }
-        else{
-            return;
-        }
-    }
+    int lastNode = sizeDynArr(heap);
+
+    /* rebuild the heap */
+    _adjustHeap(heap, lastNode, 0);
+
 }
 
 /*	Adjust heap to maintain heap property
@@ -508,30 +497,21 @@ void _adjustHeap(DynArr *heap, int max, int pos)
     /* setting left and right positions */
     int left = ((2 * pos) + 1);
     int right = ((2 * pos) + 2);
-    int smallest = -1;
-
-
+    int smallest;
 
     /* perform the adjustments */
-    if (right <= max){
-        if(left < max){
-            smallest = _smallerIndexHeap(heap, left, right);
-        }
-
-        else{
-            smallest = right;
-        }
+    if (right < max){
+        smallest = _smallerIndexHeap(heap, left, right);
         if(compare(getDynArr(heap, smallest), getDynArr(heap, pos)) == -1){
             swapDynArr(heap, pos, smallest);
+            _adjustHeap(heap, max, smallest);
         }
-        _adjustHeap(heap, max, smallest);
-
     }
-    else if(left <= max){
+    else if(left < max){
         if(compare(getDynArr(heap, left), getDynArr(heap, pos)) == -1){
             swapDynArr(heap, pos, left);
+            _adjustHeap(heap, max, left);
         }
-        _adjustHeap(heap, max, left);
 
     }
 
@@ -546,16 +526,13 @@ void _adjustHeap(DynArr *heap, int max, int pos)
 void removeMinHeap(DynArr *heap)
 {
    /* FIXME */
-   assert(heap != 0);
+    assert(heap != 0);
 
-   int last = sizeDynArr(heap);
-   if(last != 0){
-        putDynArr(heap, 0, getDynArr(heap, last -1));
-        removeAtDynArr(heap, last - 1);
-        _adjustHeap(heap, sizeDynArr(heap) - 1, 0);
+    int last = sizeDynArr(heap) -1;
 
-   }
-
+    putDynArr(heap, 0, getDynArr(heap, last));
+    removeAtDynArr(heap, last);
+    _adjustHeap(heap, last, 0);
 }
 
 /* builds a heap from an arbitrary dynArray
@@ -570,8 +547,8 @@ void _buildHeap(DynArr *heap)
     /* FIXME */
     assert(heap != 0);
     /* set max size for heap */
-    int maxSize = sizeDynArr(heap) - 1;
-    for(int i = maxSize; i >= 0; i--){
+    int maxSize = sizeDynArr(heap);
+    for(int i = maxSize/2-1; i >= 0; i--){
         _adjustHeap(heap, maxSize, i);
     }
 }
@@ -588,9 +565,78 @@ void sortHeap(DynArr *heap)
    /* FIXME */
    _buildHeap(heap);
    for(int i = (sizeDynArr(heap) -1); i > 0; i--){
-        swapDynArr(heap, i, 0);
+        swapDynArr(heap, 0, i);
         _adjustHeap(heap, i, 0);
    }
 
 }
 
+
+
+/* Iterator Interface */
+
+struct DynArrIter {
+	int	cur;
+	struct DynArr *da;
+};
+
+/* Initialize an iterator */
+
+void  initDynArrIter (struct DynArr *da, struct DynArrIter *itr) {
+	itr->da = da;
+	itr->cur = 0;
+}
+
+/* Create a new iterator struct and return it */
+
+struct DynArrIter *createDynArrIter(struct DynArr *da){
+	struct DynArrIter *newItr = malloc(sizeof(struct DynArrIter));
+	assert(newItr != 0);
+	initDynArrIter(da, newItr);
+	return(newItr);
+}
+
+
+int hasNextDynArrIter (struct DynArrIter *itr) {
+
+	if(itr->cur < itr->da->size)
+		return(1);
+	else return (0);
+
+}
+
+/* returns the next value in the collection */
+TYPE nextDynArrIter (struct DynArrIter *itr) {
+	TYPE val = itr->da->data[itr->cur++];
+	//itr->cur++;
+	return(val);
+}
+
+
+void removeDynArrIter (struct DynArrIter *itr) {
+	itr->cur--;
+	removeAtDynArr(itr->da , itr->cur);
+}
+
+
+
+/*
+   Print the dynamic array contents.  This requires that PRINT_STR be defined.
+
+*/
+void printDynArr(DynArr *v, printer print)
+{
+  int i;
+
+  printf("\nArray size = %d\n", v->size);
+  printf("Array capacity  = %d\n", v->capacity);
+  printf("Array Contents: \n ====================== \n");
+  for(i=0; i < v->size; i++)
+    {
+      printf("DA[%d] == ",i);
+      (*print)(v->data[i]);
+      // printf(PRINT_STR, (CAST_STR) v->data[i]);
+      printf("\n");
+    }
+
+}
