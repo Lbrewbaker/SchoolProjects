@@ -18,7 +18,8 @@ LINEDISPLAY = 10
 
 intro		BYTE	"Random Number Generator. By Luke Brewbaker",0
 intro2		BYTE	"This program will generator a random number between 1 and 999",0
-intro3		BYTE	"It will store any number of numbers of your choose, and store them in an array.  It will also show you an unsorted array, sorted array in decending order, and calculate the median value.", 0
+intro3		BYTE	"It will store any number of numbers of your choose, and store them in an array.",0
+intro4		BYTE	"It will also print an unsorted array, sorted array in decending order, and display the median value.", 0
 prompt		BYTE	"Please enter how many numbers you'd like generated(5-200): ",0
 invalid		BYTE	"That input is not valid.  Please enter a valid input. ",0
 dispUnsort	BYTE	"Unsorted array results: ",0
@@ -82,15 +83,15 @@ introductions PROC
 mov		edx, OFFSET intro
 call	WriteString
 Call	CrLf
-Call	CrLf
 mov		edx, OFFSET intro2
 call	WriteString
 call	CrLf
-Call	CrLf
 mov		edx, OFFSET intro3
 call	WriteString
 call	CrLf
-Call	CrLf
+mov		edx, OFFSET intro4
+call	WriteString
+call	CrLf
 ret
 
 introductions ENDP
