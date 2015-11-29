@@ -21,7 +21,7 @@ int main (int argc, const char * argv[]) {
 	struct hashMap *hashTable;
 	int tableSize = 10;
 	clock_t timer;
-	FILE *fileptr;
+
     /*
      this part is using command line arguments, you can use them if you wish
      but it is not required. DO NOT remove this code though, we will use it for
@@ -86,7 +86,7 @@ int main (int argc, const char * argv[]) {
 }
 
 void printValue(ValueType v) {
-	printf("Value:%d",(int *)v);
+	printf("Value:%d",(int)v);
 }
 
 char* getWord(FILE *file)

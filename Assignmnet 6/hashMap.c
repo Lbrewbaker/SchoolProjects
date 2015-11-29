@@ -288,7 +288,7 @@ int emptyBuckets(struct hashMap *ht)
 float tableLoad(struct hashMap *ht)
 {
 	/*write this*/
-	return 0;
+	return (float)size(ht) / capacity(ht);
 }
 void printMap (struct hashMap * ht)
 {
