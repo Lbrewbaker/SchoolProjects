@@ -38,7 +38,7 @@ mwriteString	MACRO a
 ENDM
 
 ;global constants
-MAXSIZE = 1000
+MAXSIZE = 20
 INPUTSIZE = 10
 
 .data
@@ -59,7 +59,8 @@ userString	DWORD	MAXSIZE DUP(?)
 space		BYTE	" ", 0
 sum			DWORD	?
 average		DWORD	?
-temp		DWORD	?   ; = temp_count
+loopcount	DWORD	?
+temp		DWORD	? 
 temp2		DWORD	?
 temp3		DWORD	?
 
@@ -71,19 +72,18 @@ main PROC
 call	introduction
 
 ;numbers input as a string, but converted to an int.
-
-mov		temp, 1
-call	getNumbers
-call	calculate
+	mov		temp, 1
+	call	getNumbers
+	call	calculate
 
 ;display procs
-mwriteString arrayDisp
-call	display
+	mwriteString arrayDisp
+	call	display
 
 ;goodbye proc
-call adios
+	call adios
 
-	exit		; exit to operating system
+exit		; exit to operating system
 main ENDP
 
 ;introduction proc
@@ -121,14 +121,15 @@ getNumbers ENDP
 readNums PROC
 	
 getInput:
-mwriteString	prompt2
-mov				temp3, (sizeof userInput)-1
-getString		OFFSET userInput, temp3
+	mwriteString	prompt2
+	mov				temp3, (sizeof userInput)
+	getString		OFFSET userInput, temp3
 
-mov		esi, OFFSET userinput
-mov		eax, 0
-mov		ebx, 10
-mov		ecx, 0
+	mov		esi, OFFSET userinput
+	mov		eax, 0
+	mov		ecx, 0
+	mov		ebx, 10
+
 
 ;converts to int
 convert:
@@ -136,39 +137,36 @@ convert:
 	cmp		ax, 0
 	je		done		;marks the end of the string
 
-	cmp		ax, 30h
-	jb		invalid
-	cmp		ax, 39h
-	ja		invalid
+	cmp		ax, 48d		;ASCII for 0
+	JB		invalid		
+	cmp		ax, 57d		;ASCII for 9
+	JA		invalid
 
 valid:
 	sub		ax, 30h		;convert to int
 	xchg	eax, ecx
-	mul		ebx
+	mul		ebx			;multiply by 10
 	jc		invalid		;too big of a number
-
 	xchg	eax, ecx	;moves back to eax
 	add		ecx, eax	
 	jmp		convert		;continues
 
+;prompt for a new number
 invalid:
 	mwriteString invalidInp
 	jmp		getInput
 
 done:
 	mov		esi, 0
-	.if		temp == 1
-		mov		array[esi], ecx
-	.else
-		mov		eax, temp
-		mov		temp2, eax
-		dec		temp2
-		mov		eax, temp2
-		mov		ebx, sizeof DWORD
-		mul		ebx
-		add		esi, eax
-		mov		array[esi], ecx
-	.endif
+	mov		eax, temp
+	mov		temp2, eax
+	dec		temp2
+	mov		eax, temp2
+	mov		ebx, sizeof DWORD
+	mul		ebx
+	add		esi, eax
+	mov		array[esi], ecx
+
 
 inc temp
 ret
@@ -188,8 +186,8 @@ calcLoop:
 	mov		ebx, 10
 	div		ebx
 	mov		average, eax
-	ret
 
+	ret
 calculate ENDP
 
 writeVal PROC
@@ -205,7 +203,7 @@ displayLoop:
 	jne		dispMore
 
 dispMore:
-	mwriteArray OFFSET space
+	mwriteArray space
 	add		esi, sizeof DWORD
 	loop	displayLoop
 
