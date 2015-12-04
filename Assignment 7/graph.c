@@ -224,6 +224,7 @@ int DFS(Graph* g, Vertex* source, Vertex* destination){
 	/* FIXME you will write this */
 	struct cirListDeque *stack = malloc(sizeof(struct cirListDeque));
 	struct Vertex *temp = source;
+    clearVisited(g);
 
 	/* add to the front of the circular list deque */
 	addFrontCirListDeque(stack, temp);
@@ -284,6 +285,7 @@ int BFS(Graph* g, Vertex* source, Vertex* destination){
             return 1;
         }
 
+        /* check is the neighboring nodes have been visited. add to stack if not */
         for(int i = 0; i < temp->numNeighbors; i++){
             if(!temp->neighbors[i]->isVisited){
                 addFrontCirListDeque(stack, temp->neighbors[i]);
