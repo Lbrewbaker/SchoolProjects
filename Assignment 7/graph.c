@@ -222,7 +222,10 @@ int DFSRecursive(Graph* g, Vertex* source, Vertex* destination)
  */
 int DFS(Graph* g, Vertex* source, Vertex* destination){
 	/* FIXME you will write this */
+
 	struct cirListDeque *stack = malloc(sizeof(struct cirListDeque));
+	initCirListDeque(stack);
+
 	struct Vertex *temp = source;
     clearVisited(g);
 
@@ -231,15 +234,19 @@ int DFS(Graph* g, Vertex* source, Vertex* destination){
 
 	/*if it isn't empty, use DFS */
 	while(!isEmptyCirListDeque(stack)){
-        temp = frontCirListDeque(stack);
-        removeFrontCirListDeque(stack);
 
-        /* check if visited, mark, and return true */
+        temp = backCirListDeque(stack);
+        removeBackCirListDeque(stack);
+
+        /* check if visited, mark if it hasn't been visited */
         if(!temp -> isVisited){
             temp ->isVisited = 1;
         }
 
         if(temp == destination){
+
+            /* if you reach the destination, remove from the list to free memory, return 1 */
+            removeAllCirListDeque(stack);
             return 1;
         }
 
@@ -263,9 +270,13 @@ int DFS(Graph* g, Vertex* source, Vertex* destination){
  */
 int BFS(Graph* g, Vertex* source, Vertex* destination){
 	/* FIXME you will write this */
+
+	/* create and initialize circular list deque pointer */
     struct cirListDeque *stack = malloc(sizeof(struct cirListDeque));
-    struct Vertex *temp = source;
     initCirListDeque(stack);
+
+    /*/ create vertex pointer and clear visited nodes */
+    struct Vertex *temp = source;
     clearVisited(g);
 
     /* add to front */
@@ -273,7 +284,8 @@ int BFS(Graph* g, Vertex* source, Vertex* destination){
 
     /* if not empty, use BFS */
     while(!isEmptyCirListDeque(stack)){
-        /*remove back value */
+
+        /*remove back(top) value */
         temp = backCirListDeque(stack);
         removeBackCirListDeque(stack);
 
@@ -282,6 +294,8 @@ int BFS(Graph* g, Vertex* source, Vertex* destination){
             temp -> isVisited = 1;
         }
         if(temp == destination){
+
+            removeAllCirListDeque(stack);
             return 1;
         }
 
