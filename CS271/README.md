@@ -2,5 +2,5 @@
 
 CS271 - x86 Assembly Language
 
-Written in MASM, using Irvine32 library.Course taken Fall 2015.
+Written in MASM, using Irvine32 library. Course taken Fall 2015.
 
