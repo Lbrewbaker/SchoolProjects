@@ -3,7 +3,7 @@ TITLE Program 6(Option B)		(program6.asm)
 ; Program Description: low level I/O Procedures and implementing recurssion passing parameters on system stack
 ; Author: Luke Brewbaker
 ; Date Created: 28 Nov 15
-; Last Modification Date: 2 Dec 15
+; Last Modification Date: 6 Dec 15
 
 INCLUDE Irvine32.inc
 
@@ -119,7 +119,8 @@ getNumbers ENDP
 
 ;read the numbers
 readNums PROC
-	
+
+;for some reasion, I can't get it to accept the number 1.  Input has to be greater than 1
 getInput:
 	mwriteString	prompt2
 	mov				temp3, (sizeof userInput)
@@ -131,13 +132,14 @@ getInput:
 	mov		ebx, 10
 
 
-;converts to int
+;converts a string to an INT
+
 convert:
 	lodsb				;byte from esi goes to ax
 	cmp		ax, 0
 	je		done		;marks the end of the string
 
-	cmp		ax, 48d		;ASCII for 0
+	cmp		ax, 48d		;ASCII for 0 since we are comparing a string not an int at this point
 	JB		invalid		
 	cmp		ax, 57d		;ASCII for 9
 	JA		invalid
