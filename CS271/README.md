@@ -1,3 +1,6 @@
-# SchoolProjects
+# CS 271
 
-Repository that contains my coding projects from OSU.  
+CS271 - x86 Assembly Language
+
+Written in MASM, using Irvine32 library.Course taken Fall 2015.
+
