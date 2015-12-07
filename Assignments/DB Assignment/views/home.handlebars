@@ -1,0 +1,89 @@
+<h2>Enter a workout:</h2>
+<form method="post">
+	<label for="name">Exercise Name:</label>
+	<input id="name" type="text" name="name">
+	<br>
+	<label for="reps">Reps:</label>
+	<input id="reps" type="text" name="reps">
+	<br>
+	<label for="weight">Weight:</label>
+	<input id="weight" type="text" name="weight">
+	<br>
+	<label for="date">Date Completed:</label>
+	<input id="date" type="text" name="date">
+	<span>YYYY/MM/DD Format</span>
+	<br>
+	<label for="units">Weight Units:</label>
+	<input id="units" type="text" name="units">
+	<span>Enter 0 for kgs. Enter 1 for lbs.</span>
+	<br>
+	<input id = "addWorkout" type="submit" name="workout" value="Submit">
+</form>
+
+<table>
+	<caption>Workouts Completed</caption>
+	<thead>
+		<tr>
+			<th>Exercise Name</th>
+			<th>Reps</th>
+			<th>Weight</th>
+			<th>Date Completed</th>
+			<th>Weight Units</th>
+		</tr>
+	</thead>
+	<tbody id="mainTable">
+		{{#if results}}
+		{{#each results}}
+		<tr id="row{{this.id}}">
+			<td>{{this.name}}</td>
+			<td>{{this.reps}}</td>
+			<td>{{this.weight}}</td>
+			<td>{{this.date}}</td>
+			<td>{{this.lbs}}</td>
+			<td>
+				<form method="post">
+					<input type="hidden" name="id" value="{{this.id}}">
+					<input type="submit" name="edit" value="Edit">
+					<input class="deleteWorkout" type="submit" name="delete" value="Delete">
+				</form>
+			</td>
+		</tr>
+		{{/each}}
+		{{/if}}
+	</tbody>
+</table>
+
+{{#if toEdit}}
+<br>
+<br>
+<table>
+	<caption>Workout to Edit</caption>
+	<thead>
+		<tr>
+			<th>Exercise Name</th>
+			<th>Reps</th>
+			<th>Weight</th>
+			<th>Date Completed</th>
+			<th>Weight Units</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each toEdit}}
+		<tr>
+			<form method="post">
+				<input type="hidden" name="id" value="{{this.id}}">
+				<td><input id="name" type="text" name="name" value="{{this.name}}"></td>
+				<td><input id="reps" type="text" name="reps" value="{{this.reps}}"></td>
+				<td><input id="weight" type="text" name="weight" value="{{this.weight}}"></td>
+				<td><input id="date" type="text" name="date" value="{{this.date}}"></td>
+				<td><input id="units" type="text" name="units" value="{{this.lbs}}"></td>
+				<td><input type="submit" name="edited" value="Submit Edits"></td>
+			</form>
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
+{{/if}}
+
+<br><br>
+<span><a href="/reset">Reset</a></span>
