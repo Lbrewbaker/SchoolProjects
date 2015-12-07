@@ -1,4 +1,3 @@
-# CS271
-CS 271 - Comp. Architecture and Assembly Language for x86
+# SchoolProjects
 
-Using Kip Irvine's 7th edition Assembly LAnguage for x86 processors and associated 32bit libraries available at asmirvine.com
+Repository that contains my coding projects from OSU.  
