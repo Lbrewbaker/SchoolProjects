@@ -1,0 +1,25 @@
+<div id="getPostDiv">
+
+	<!  POST Data:>
+	{{#if isPost}}
+		<h1>This is a POST request</h1>
+		
+		{{#each post.params}}
+		<ul>
+			<li>{{this.name}} : {{this.value}} </li>
+		{{/each}}
+		</ul>
+		
+	<!  GET Data:>
+		{{else}}
+		<h1>This is a GET request</h1>
+		
+		{{#each params}}
+		<ul>
+			<li>{{this.name}} : {{this.value}} </li>
+		{{/each}}
+		</ul>
+		
+		
+	{{/if}}
+</div>
