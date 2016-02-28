@@ -1,6 +1,8 @@
 <?php
   include('connection-mysql.php');
-  $sqlselect = "SELECT * FROM defensivemods";
+  $sqlselect = "SELECT d.deffmodid, d.name, d.deftype, d.description, f.name
+  FROM defensivemods as d
+  INNER JOIN factions AS f on d.fact_id = f.factionid";
   $result1 = mysqli_query($dbcon, $sqlselect);  
 ?>
 
@@ -46,6 +48,7 @@
       </table>
 
 	<!Add Module Form>
+	<div class ="addform">
     <form method="post" action="insert_defmod.php">
 			<input type="hidden" name="submitted" value="true" />
 			<legend>Add Modules</legend>
@@ -61,14 +64,23 @@
 				<label for="type">Description</label>
 				<input type="text" name="description" class="form-control" id="description" placeholder="">
 			</div>
+			<div class="form-group">
+				<label for="type">Faction</label>
+				<input type="text" name="fact_id" class="form-control" id="fact_id" placeholder="">
+			</div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
+	</div>
 	 
 	 <!Edit Module Form>
+	 <div class = "editform">
 	 <form method="post" action="update_defmod.php">
 			<input type="hidden" name="submitted" value="true" />
-			<input type="hidden" name="factionID" value="<?php echo htmlspecialchars($_GET["offmodid"]); ?>" />
 			<legend>Edit Modules</legend>
+			<div class="form-group">
+				<label for="name">ID</label>
+				<input type="text" name="deffmodid" class="form-control" id="deffmodid" placeholder="">
+			</div>
 			<div class="form-group">
 				<label for="name">Name</label>
 				<input type="text" name="name" class="form-control" id="name" placeholder="">
@@ -81,8 +93,13 @@
 				<label for="type">Description</label>
 				<input type="text" name="description" class="form-control" id="description" placeholder="">
 			</div>
+			<div class="form-group">
+				<label for="type">Faction</label>
+				<input type="text" name="fact_id" class="form-control" id="fact_id" placeholder="">
+			</div>
         <button type="submit" class="btn btn-default">Submit</button>
      </form>
+	 </div>
 
 
     <script src="http://code.jquery.com/jquery.js"></script>

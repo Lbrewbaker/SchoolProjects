@@ -1,6 +1,5 @@
 <?php
   error_reporting(E_ALL);
-
   DEFINE ('DB_USER', 'ENTER_YOUR_INFO');
   DEFINE ('DB_PSWD', 'ENTER_YOUR_INFO');
   DEFINE ('DB_HOST', 'ENTER_YOUR_INFO');
