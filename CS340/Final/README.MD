@@ -3,3 +3,6 @@ A simple PHP and MySQL driven website. Will add more details as I get further al
 1. Add the 'dbsetup.sql' to your desired SQL Server.
 2. Update 'connection-mysql.php' with your credentials.
 3. Add/Edit and have fun.
+
+
+My project is viewable here: http://web.engr.oregonstate.edu/~brewbakl/CS340/index.html
