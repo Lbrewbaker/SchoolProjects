@@ -36,6 +36,12 @@
 			<button type = "submit" class = "btn btn-default">View &raquo;</button>
 			</legend>
 		</form>
+		<form method="post" action = "viewalliances.php">
+			<input type = "hidden" name = "submitted" value = "true" />
+			<legend> View Alliances
+			<button type = "submit" class = "btn btn-default">View &raquo;</button>
+			</legend>
+		</form>
 		
     </div> 
 
