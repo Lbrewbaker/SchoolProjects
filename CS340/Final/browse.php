@@ -36,9 +36,9 @@
 			<button type = "submit" class = "btn btn-default">View &raquo;</button>
 			</legend>
 		</form>
-		<form method="post" action = "viewalliances.php">
+		<form method="post" action = "viewfactionwarfare.php">
 			<input type = "hidden" name = "submitted" value = "true" />
-			<legend> View Alliances
+			<legend> View Factional Warfare
 			<button type = "submit" class = "btn btn-default">View &raquo;</button>
 			</legend>
 		</form>
