@@ -4,7 +4,7 @@
 
 	// run sql query to pull all related entries from other tables
 	$sqlalliquery = "SELECT DISTINCT  a.name, a.description, f.name, d.name
-	FROM alliances AS a 
+	FROM factionwar AS a 
 	LEFT JOIN factions AS f ON a.primary_faction=f.factionid
 	LEFT JOIN factions as d ON a.secondary_faction = d.factionid
 	GROUP BY a.name";
@@ -33,7 +33,7 @@
     </div>
 
     <div class="container">
-      <h3>Viewing Offensive Modules</h3>
+      <h3>Viewing Factional Warfare Information</h3>
       <table class="table table-striped">
         <tr>
 			<th>Name</th>

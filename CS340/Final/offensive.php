@@ -23,9 +23,10 @@ $result = mysqli_query($dbcon, $sqlselect);
 	<div class="navbar-inner">
 		<a class="brand" href="index.html">CS340 Final</a>
 				<ul class="nav navbar-nav navbar-right">
+				<li><a href="manage.html">Manage</a></li>
 				<li><a href="factions.php">Factions</a></li>
 				<li><a href="defensive.php">Defensive Mods</a></li>
-				<li><a href="alliances.php">Alliances</a></li>
+				<li><a href="faction_warfare.php">Factional Warfare</a></li>
 			</ul>
 	</div>
 </div>

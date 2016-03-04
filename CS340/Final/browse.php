@@ -16,10 +16,10 @@
     <div class="container">
       <h3>EVE Online Database</h3>
 
-		<form method="post" action="searchfaction.php">
+		<form method="post" action="viewfactions.php">
 			<input type="hidden" name="submitted" value="true" />
 			<legend>View Factions
-			<button type="submit" class="btn btn-default">Submit &raquo;</button>
+			<button type="submit" class="btn btn-default">View &raquo;</button>
 			</legend>
 		</form>
 	  

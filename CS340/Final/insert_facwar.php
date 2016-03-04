@@ -7,7 +7,7 @@
 	$prim_id = $_POST['prim_id'];
 	$sec_id = $_POST['sec_id'];
 
-    $sqlinsert = "INSERT INTO alliances (name, description, primary_faction, secondary_faction) VALUES ('$name', '$description', $prim_id, $sec_id)";
+    $sqlinsert = "INSERT INTO factionwar (name, description, primary_faction, secondary_faction) VALUES ('$name', '$description', $prim_id, $sec_id)";
     $insert = $dbcon->query($sqlinsert);
 
     if(!$insert) {
@@ -15,5 +15,5 @@
     }
   }
 
-  header("Location:http://web.engr.oregonstate.edu/~brewbakl/CS340/alliances.php");
+  header("Location:http://web.engr.oregonstate.edu/~brewbakl/CS340/faction_warfare.php");
 ?>  

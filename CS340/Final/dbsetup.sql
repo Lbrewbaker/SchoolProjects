@@ -25,13 +25,13 @@ CREATE TABLE defensivemods (
 	FOREIGN KEY (fact_id) REFERENCES factions(factionid)
 	) ENGINE=InnoDB;
 
-CREATE TABLE alliances (
-	allianceid int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE factionwar (
+	facwarid int(11) NOT NULL AUTO_INCREMENT,
 	name varchar(255) NOT NULL,
 	description text,
 	primary_faction int(11),
     secondary_faction int(11),
-	PRIMARY KEY (allianceid),
+	PRIMARY KEY (facwarid),
 	FOREIGN KEY (primary_faction) REFERENCES factions(factionid),
 	FOREIGN KEY (secondary_faction) REFERENCES factions(factionid)
 	) ENGINE=InnoDB;

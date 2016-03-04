@@ -4,31 +4,12 @@
 	$sqlselect = "SELECT * FROM factions";
 	$result1 = mysqli_query($dbcon, $sqlselect);  
 
-	// run sql query to get ID from name submission
-	$faction_name = $_POST["name"];
-	$sqlfactionid = "SELECT factionid FROM factions WHERE name='$faction_name'";
-	$id_query = mysqli_query($dbcon, $sqlfactionid);
-	$faction_id = mysqli_fetch_array($id_query);
-	
-	/*
-	$sqloffinfoquery = "SELECT DISTINCT o.name
-	FROM factions as FROM
-	LEFT JOIN offensivemods AS o ON f.factionid = o.fact_id,
-	WHERE f.factionid = '$faction_id[0]'";
-	$off_query = mysqli_query($dbcon, $sqlfactquery);
-	$off_data = mysqli_fetch_array($off_query):;
-
-	*/
-	
-	
-
-	
 	// run sql query to pull all related entries from other tables
 	$sqlfactquery = "SELECT DISTINCT  f.name, f.description, o.weapontype, d.deftype, a.name
 	FROM factions AS f 
 	LEFT JOIN offensivemods AS o ON f.factionid=o.fact_id 
 	LEFT JOIN defensivemods AS d ON f.factionid=d.fact_id 
-	LEFT JOIN alliances AS a ON f.factionid=a.primary_faction";
+	LEFT JOIN factionwar AS a ON f.factionid=a.primary_faction";
 	$faction_query = mysqli_query($dbcon, $sqlfactquery);
 
   
@@ -63,7 +44,7 @@
 			<th>Description</th>
 			<th>Offensive Specialty</th>
 			<th>Deffensive Speciality</th>
-			<th>Primary Alliance</th>
+			<th>Factional Warfare</th>
         </tr>
 		<?php while($factiondata = mysqli_fetch_array($faction_query)):; ?> 
         <tr>

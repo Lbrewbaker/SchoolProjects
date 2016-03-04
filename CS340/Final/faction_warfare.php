@@ -1,7 +1,7 @@
 <?php
   include('connection-mysql.php');
-  $sqlselect = "SELECT a.allianceid, a.name, a.description, f.name, d.name
-  FROM alliances AS a
+  $sqlselect = "SELECT a.facwarid, a.name, a.description, f.name, d.name
+  FROM factionwar AS a
   INNER JOIN factions AS f ON  a.primary_faction = f.factionid
   INNER JOIN factions AS d ON  a.secondary_faction = d.factionid";
   $result1 = mysqli_query($dbcon, $sqlselect);  
@@ -20,6 +20,7 @@
       <div class="navbar-inner">
         <a class="brand" href="index.html">CS340 Final</a>
 		  <ul class="nav navbar-nav navbar-right">
+		  <li><a href="manage.html">Manage</a></li>
           <li><a href="factions.php">Factions</a></li>
           <li><a href="offensive.php">Offensive Mods</a></li>
           <li><a href="defensive.php">Defensive Mods</a></li>
@@ -28,7 +29,7 @@
     </div>
 
     <div class="container">
-      <h3>Alliances</h3>
+      <h3>Factional Warfare</h3>
       <table class="table table-striped">
         <tr>
           <th>ID</th>
@@ -50,7 +51,7 @@
 
 	<!Add Module Form>
 	<div class = "addform">
-    <form method="post" action="insert_alliance.php">
+    <form method="post" action="insert_facwar.php">
 			<input type="hidden" name="submitted" value="true" />
 			<legend>Add Modules</legend>
 			<div class="form-group">
@@ -75,7 +76,7 @@
 	 
 	 <!Edit Module Form>
 	 <div class = "editform">
-	 <form method="post" action="update_alliance.php">
+	 <form method="post" action="update_facwar.php">
 			<input type="hidden" name="submitted" value="true" />
 			<legend>Edit Modules</legend>
 			<div class="form-group">
@@ -92,7 +93,7 @@
 			</div>
 			<div class="form-group">
 				<label for="type">Faction</label>
-				<input type="text" name="ally_id" class="form-control" id="ally_id" placeholder="">
+				<input type="text" name="fac_id" class="form-control" id="fac_id" placeholder="">
 			</div>
         <button type="submit" class="btn btn-default">Submit</button>
      </form>

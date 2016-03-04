@@ -5,10 +5,10 @@
 	$allianceid = $_POST['allianceid'];
     $name = $_POST['name'];
     $description = $_POST['description'];
-	$ally_id = $_POST['ally_id'];
+	$fac_id = $_POST['fac_id'];
 
     if ($name != "") {
-		$sqlupdate = "UPDATE alliances SET name='$name' WHERE allianceid='$allianceid'";
+		$sqlupdate = "UPDATE factionwar SET name='$name' WHERE facwarid='$fac_id'";
 		$insert = $dbcon->query($sqlupdate);
 
 		if(!$insert) {
@@ -17,7 +17,7 @@
     }
 
     if ($description != "") {
-		$sqlupdate = "UPDATE alliances SET description='$description' WHERE allianceid='$allianceid'";
+		$sqlupdate = "UPDATE factionwar SET description='$description' WHERE facwarid='$fac_id'";
 		$insert = $dbcon->query($sqlupdate);
 
 		if(!$insert) {
@@ -25,8 +25,8 @@
 		}
     }
 	
-	if ($ally_id != "") {
-		$sqlupdate = "UPDATE alliances SET ally_id='$ally_id' WHERE allianceid='$allianceid'";
+	if ($fac_id != "") {
+		$sqlupdate = "UPDATE factionwar SET fac_id='$fac_id' WHERE facwarid='$fac_id'";
 		$insert = $dbcon->query($sqlupdate);
 
 		if(!$insert) {
@@ -36,5 +36,5 @@
 	
 }
 
-  header("Location:http://web.engr.oregonstate.edu/~brewbakl/CS340/alliances.php");
+  header("Location:http://web.engr.oregonstate.edu/~brewbakl/CS340/faction_warfare.php");
 ?> 
