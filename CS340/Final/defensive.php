@@ -2,7 +2,8 @@
   include('connection-mysql.php');
   $sqlselect = "SELECT d.deffmodid, d.name, d.deftype, d.description, f.name
   FROM defensivemods as d
-  INNER JOIN factions AS f on d.fact_id = f.factionid";
+  INNER JOIN factions AS f on d.fact_id = f.factionid
+  GROUP BY d.deffmodid";
   $result1 = mysqli_query($dbcon, $sqlselect);  
 ?>
 
