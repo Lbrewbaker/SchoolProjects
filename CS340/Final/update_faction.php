@@ -5,9 +5,10 @@
     $factionid = $_POST['factionid'];
     $name = $_POST['name'];
     $description = $_POST['description'];
+	
 
     if ($name != "") {
-      $sqlupdate = "UPDATE factions SET name='$name' WHERE name='$name'";
+      $sqlupdate = "UPDATE factions SET name='$name' WHERE factionid='$factionid'";
       $insert = $dbcon->query($sqlupdate);
 
       if(!$insert) {
@@ -16,7 +17,7 @@
     }
 
     if ($description != "") {
-      $sqlupdate = "UPDATE factions SET description='$description' WHERE name='$name'";
+      $sqlupdate = "UPDATE factions SET description='$description' WHERE factionid='$factionid'";
       $insert = $dbcon->query($sqlupdate);
 
       if(!$insert) {

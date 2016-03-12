@@ -63,8 +63,12 @@
 	 <div class = "editform">
 	 <form method="post" action="update_faction.php">
 			<input type="hidden" name="submitted" value="true" />
-			<input type="hidden" name="factionID" value="<?php echo htmlspecialchars($_GET["factionID"]); ?>" />
 			<legend>Edit</legend>
+			<div class="form-group">
+				<label for="name">ID</label>
+				<input type="text" name="factionid" class="form-control" id="factionid" placeholder="">
+			</div>
+			<div cla
 			<div class="form-group">
 				<label for="factionnameinput">Name</label>
 				<input type="text" name="name" class="form-control" id="factionnameinput" placeholder="">
