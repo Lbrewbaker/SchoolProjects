@@ -1,0 +1,103 @@
+#Luke Brewbaker
+#OSU CS 344 - Program 1 - average, median, mode bash script.  uses test_file for the testing.
+#4.7.2016
+
+EXIT_FAIL=1
+EXIT_SUCCESS=0
+
+#usage information
+usage () {
+	echo "$0 {-rows|-cols} [file]" 1>&2
+}
+
+if [[ $# > 2 ]]; then
+	usage
+	exit $EXIT_FAIL
+fi
+
+#If user selects rows, do the following
+if [[ $1 =~ ^-r ]]; then
+	printf "Average\tMedian\n"
+	while read line
+		do
+			sort_line=$(echo "$line" | expand | tr ' ' '\n' | sed '/^$/d' | sort -n | tr '\n' ' ')
+			line_array=($sort_line)
+			line_sum=$(echo $sort_line | sed 's/ / + /g')
+			line_length=${#line_array[@]}
+			center_index=$(expr $line_length / 2)
+			numerator_correction=$(expr \( $line_length \) / 2 )
+			median=${line_array[$center_index]}
+			average=$(expr \( $line_sum + $numerator_correction \) / $line_length)
+			printf "$average\t$median\n"
+	done < "${2:-/dev/stdin}"
+
+
+#if user selects columns
+elif [[ $1 =~ ^-c ]]; then
+
+	# Create a buffer to hold the contents of the file.
+	file=""
+	# Read the file line by line
+	while read line 
+	do
+		file+=$line
+		file+=$'\n'
+	done < "${2:-/dev/stdin}"
+	first_line_array=($(printf "%s\n" "$file" | head -1))
+	first_line_length=${#first_line_array[@]}
+
+	#Holds calculated data in arrays
+	averages=()
+	means=()
+
+	if [[ $first_line_length == 0 ]]
+	then
+		echo Averages:
+		printf "\n"
+		echo Medians:
+		printf "\n"
+		exit $EXIT_SUCCESS
+	fi
+
+	#Loop the length of the line
+	for index in $(seq 1 $first_line_length)
+	do
+		data=$(printf "%s\n" "$file" | cut -f $index | sort -n | tr '\n' ' ')
+		#Convert to array
+		data_arr=($data)
+		#Find the median
+		mid_point=$(expr ${#data_arr[@]} / 2)
+		#Sum of the numbers
+		data_sum=$(echo $data | sed 's/ / + /g')
+		numerator_correction=$(expr \( ${#data_arr[@]} \) / 2 )
+		#Calculate the average.
+		average=$(expr \( $data_sum + $numerator_correction \) / ${#data_arr[@]})
+		#Find median
+		mean=${data_arr[$mid_point]}
+		#Append the calculated data to the arrays
+		averages+=($average)
+		means+=($mean)
+	done
+	
+	#Print data to console
+	echo Averages:
+	printf "%s\t" ${averages[@]}
+	printf "\n"
+	echo Medians:
+	printf "%s\t" ${means[@]}
+	printf "\n"
+
+else
+	usage
+	exit $EXIT_FAIL
+fi
+
+#Cleanup temp file
+cleanup() {
+	rm -f "tmp_file_$$"
+	exit 0
+}
+
+
+#I had some help from stack overflow, specifically this thread: http://stackoverflow.com/questions/31523179/calculate-median-and-average-of-a-text-file-with-multiple-columns-of-data 
+#As well as this thread: http://stackoverflow.com/questions/33181533/how-to-print-output-of-two-functions-next-to-each-in-two-columns-bash-script 
